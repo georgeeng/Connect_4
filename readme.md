@@ -1,12 +1,12 @@
-How to build Connect 4 in JavaScript: A Tutorial --- by George Eng
+**How to build Connect 4 in JavaScript: A Tutorial --- by George Eng**
 
 In order to build our connect 4 game, we will first need to write some functions to create the engine of the game. 
 
-The first thing we need to do to create our Connect 4 Engine, is to create a few functions that will:
-1. Create a board (Array of Arrays)
-2. Create 3 different states (i.e. EMPTY, RED, YELLOW)
-3. Create a function that sets a value in the array without modifying the original.
-4. Create a Drop_Piece function.
+The first thing we need to do to create our Connect 4 Engine, is to create a few functions that will:  
+1. Create a board (Array of Arrays)  
+2. Create 3 different states (i.e. EMPTY, RED, YELLOW)  
+3. Create a function that sets a value in the array without modifying the original.  
+4. Create a Drop_Piece function.  
 
 
 
