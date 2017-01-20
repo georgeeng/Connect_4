@@ -140,14 +140,25 @@ function max_index_by(arr, value){
 	}
 	return index;
 }
+```js  
+Some insight that I have gained throughout writing this program was the ability to reuse code within functions; this will make things run faster by having less for loops and less scripts. Though it may be irrelevant from creating the game--I wanted to share my eye opening experience by writing functions differently.  
+  
+Notice at the above code how they are using each other. This is a great example of being efficient with functional programming as we can utilize one function, and reuse that function within other functions. I have commented out what the functions would be doing if they were independent of each other to demonstrate contrast.  
+  
+Take these utility functions, put them into a utility.js file. This is just to keep things simple and clean!  
+
 ```
-Some insight that I have gained throughout writing this program was the ability to reuse code within functions; this will make things run faster by having less for loops and less scripts. Though it may be irrelevant from creating the game--I wanted to share my eye opening experience by writing functions differently.
+module.exports = {
+	sum, id,
+	max, max_index, max_by, max_index_by,
+	list, replace
+}
+```
+Last but not least, we will need to export these functions within this file so that other files can use them.
 
-Notice at the above code how they are using each other. This is a great example of being efficient with functional programming as we can utilize one function, and reuse that function within other functions. I have commented out what the functions would be doing if they were independent of each other to demonstrate contrast.
+**Now, that we have our data structure set up for the game... Here comes the fun part!**
 
-**Now, we have our data structure set up for the game.**
-
-
+We will need to keep track of 
 
 
 
