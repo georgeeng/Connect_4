@@ -6,19 +6,23 @@ const log = console.log.bind(console)
 const dir = x => console.dir(x, { depth: null })
 
 // OPTIMIZATION
-// const k = x => () => x
-// const const_null = k(null)
-// const null_column = () => list(6)
-// const get_1 = x => x[1]
+const k = x => () => x
+const const_null = k(null)
+const null_column = () => list(6)
+const get_1 = x => x[1]
 // OPTIMIZATION
 
 // is a column full? i.e. no EMPTYs
 
 // const is_filled = col => col.indexOf(EMPTY) === -1
 
-const is_filled = function(){
-	return col.indexOf(EMPTY === -1)
+function is_filled(col){
+	return col.indexOf(EMPTY) === -1
 }
+
+// const is_filled = function col(){
+// 	return col.indexOf(EMPTY === -1)
+// }
 
 // ai function, if depth is zero, call base function, otherwise recurse on general case
 const ai = (board, color, depth) =>
@@ -98,26 +102,191 @@ function next_states(board, color){
 	return next_states;
 }
 
+var totalStreaks = {
+
+	red2open2: 0,
+	yellow2open2: 0,
+	red3open2: 0,
+	yellow3open2: 0,
+
+	red2open1: 0,
+	yellow2open1: 0,
+	red3open1: 0,
+	yellow3open1: 0,
+	red4: 0, 
+	yellow4: 0 
+
+}
+
+// var copyOfTotalStreaks = {
+// 	...totalStreaks
+// }
+
+function vertical_streaks(board, color){
+	var redStreak = 0;
+	var yellowStreak = 0;
+
+	for (let i = 0; i < board.length; i++) {
+		let row = board[i];
+
+		for (let j = 0; j < row.length; j++) {
+			let space = row[j];
+
+			if (redStreak === 4) {
+				totalStreaks.red4 += 1;
+			} else if (yellowStreak === 4) {
+				totalStreaks.yellow4 += 1;
+			}
+
+			if (space === 1) {
+				if (yellowStreak > 0) {
+					yellowStreak = 0;
+				}
+
+				redStreak++;
+			} else if (space === 2) {
+				if (redStreak > 0) {
+					redStreak = 0;
+				}
+
+				yellowStreak++;
+			} else if (space === 0){
+				switch (redStreak) {
+					case 2:
+						totalStreaks.red2open1 += 1;
+					case 3:
+						totalStreaks.red3open1 += 1;
+					default:
+						break;
+				}
+				switch (yellowStreak) {
+					case 2:
+						totalStreaks.yellow2open1 += 1;
+					case 3:
+						totalStreaks.yellow3open1 += 1;
+					default:
+						break;
+				}
+				redStreak = 0;
+				yellowStreak = 0;
+			}
+		}
+	}
+}
+
+
+function horizontal_streaks(board, color){
+
+	var spaceOpen = false;
+	var redStreak = 0;
+	var yellowStreak = 0;
+
+	for (let y = 0; y < board[0].length; y++) {
+		for (let x = 0; x < board.length; x++) {
+			let space = board[x][y];
+			// let nextSpace = board[x+1][y]
+			if (redStreak === 4) {
+				totalStreaks.red4 += 1;
+			} else if (yellowStreak === 4) {
+				totalStreaks.yellow4 += 1;
+			}
+			
+			if (space === 1) {
+				if (yellowStreak > 0) {
+					if (spaceOpen) {
+						switch (yellowStreak) {
+							case 2:
+								totalStreaks.yellow2open1 += 1;
+							case 3:
+								totalStreaks.yellow3open1 += 1;
+						}	
+					}
+					yellowStreak = 0;
+				}
+				redStreak++;
+			}
+			if (space === 2) {
+				if (redStreak > 0) {
+					if (spaceOpen) {
+						switch (redStreak) {
+							case 2:
+								totalStreaks.red2open1 += 1;
+							case 3:
+								totalStreaks.red3open1 += 1;
+							default:
+								break;
+						}	
+					}
+					redStreak = 0;
+				}
+				yellowStreak++;
+			} else if (space === 0){
+				switch (yellowStreak) {
+					case 2:
+						if (spaceOpen === true){
+							totalStreaks.yellow2open2 += 1;
+						} else {
+							totalStreaks.yellow2open1 += 1;
+						}
+					case 3:
+						if (spaceOpen === true){
+							totalStreaks.yellow3open2 += 1;
+						} else {
+							totalStreaks.yellow3open1 += 1;
+						}
+					default:
+						break;
+				}
+				switch (redStreak) {
+					case 2:
+						if (spaceOpen === true){
+							totalStreaks.red2open2 += 1;
+						} else {
+							totalStreaks.red2open1 += 1;
+						}
+					case 3:
+						if (spaceOpen === true){
+							totalStreaks.red3open2 += 1;
+						} else {
+							totalStreaks.red3open1 += 1;
+						}
+					default:
+						break;
+				}
+				spaceOpen = true;
+			}
+		}
+	}
+}
+
+// function diagonal_streak1(board, color){
+
+// }
+
+// function diagonal_streak2(board, color){
+
+// }
+
 
 // function minimax(board, depth){
 
 // }
 
-// function ai_gen(board, color, depth) {
+function ai_gen(board, color, depth) {
 
-// 	const picks = [];
+	const picks = [];
 
-// 	for (let i = 0; i < 7; i++) {
-// 		if (!is_filled(board[i])) {
-// 			const next_board = drop_piece(board, i, color)
-// 			const next_picks = ai(next_board, switch_color(color), depth - 1)
-// 			const pick = max_by(next_picks, get_1)
+	for (let i = 0; i < 7; i++) {
+		if (!is_filled(board[i])) {
+			const next_board = drop_piece(board, i, color)
+			const next_picks = ai(next_board, switch_color(color), depth - 1)
+			const pick = max_by(next_picks, get_1)
 
-// 			picks.push([i, -pick[1]])
-// 		}
-// 	}
-// 	return picks
-// }
+			picks.push([i, -pick[1]])
+		}
+	}
+	return picks
+}
 
 // how valuable is a streak?
 function weight(streak) {
