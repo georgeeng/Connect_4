@@ -1,25 +1,24 @@
 const { sum, list, replace, max_by, max_index_by } = require('./utility')
 const { EMPTY, RED, YELLOW, make_board, drop_piece, winner, switch_color, show_board } = require('./c4')
+// const { make_game } = require('./shell')
 
 const log = console.log.bind(console)
 const dir = x => console.dir(x, { depth: null })
 
-const show_state = s =>
-	s === EMPTY
-		? '_'
-	: s === RED
-		? 'R'
-		: 'Y'
-
 // OPTIMIZATION
-const k = x => () => x
-const const_null = k(null)
-const null_column = () => list(6)
-const get_1 = x => x[1]
+// const k = x => () => x
+// const const_null = k(null)
+// const null_column = () => list(6)
+// const get_1 = x => x[1]
 // OPTIMIZATION
 
 // is a column full? i.e. no EMPTYs
-const is_filled = col => col.indexOf(EMPTY) === -1
+
+// const is_filled = col => col.indexOf(EMPTY) === -1
+
+const is_filled = function(){
+	return col.indexOf(EMPTY === -1)
+}
 
 // ai function, if depth is zero, call base function, otherwise recurse on general case
 const ai = (board, color, depth) =>
@@ -38,24 +37,27 @@ function ai_base(board, color) {
 	for (let i = 0; i < 7; i++) {
 		if (!is_filled(board[i])) {
 
-			const next_board_red = drop_piece(board, i, color=RED)
+			console.log(next_states(board, color))
+			console.log()
 
-			const descending_red = color_sum(streak_table(next_board_red, descend), color=RED)
-			const ascending_red = color_sum(streak_table(next_board_red, ascend), color=RED)
+			// const next_board_red = drop_piece(board, i, color=RED)
 
-			const score_red = ascending_red + descending_red
-			// console.log(ascending_red, descending_red)
+			// const descending_red = color_sum(streak_table(next_board_red, descend), color=RED)
+			// const ascending_red = color_sum(streak_table(next_board_red, ascend), color=RED)
 
-			///////////////////////////////////////////////////////////////////////////////////////////
+			// const score_red = ascending_red + descending_red
+			// console.log(" ascending_red , descending_red ", i, ascending_red, descending_red)
 
-			const next_board_yellow = drop_piece(board, i, color=YELLOW)
+			// ///////////////////////////////////////////////////////////////////////////////////////////
 
-			const descending_yellow = color_sum(streak_table(next_board_yellow, descend), color=YELLOW)
-			const ascending_yellow = color_sum(streak_table(next_board_yellow, ascend), color=YELLOW)
+			// const next_board_yellow = drop_piece(board, i, color=YELLOW)
+
+			// const descending_yellow = color_sum(streak_table(next_board_yellow, descend), color=YELLOW)
+			// const ascending_yellow = color_sum(streak_table(next_board_yellow, ascend), color=YELLOW)
 			
-			const score_yellow = ascending_yellow + descending_yellow
+			// const score_yellow = ascending_yellow + descending_yellow
 
-			const score = score_yellow - score_red - 10
+			// const score = score_yellow - score_red - 10
 
 			// const score = score_red - score_yellow //really bad
 
@@ -73,7 +75,7 @@ function ai_base(board, color) {
 
 
 
-			picks.push([i, score])
+			// picks.push([i, score])
 
 		}
 	}
@@ -85,22 +87,37 @@ function ai_base(board, color) {
 // recurse on each board, taking the column-score lists from each
 // pick best score from each board, use the best score to represent that column choice
 // return new column-score pairs
-function ai_gen(board, color, depth) {
 
-	const picks = [];
-
-	for (let i = 0; i < 7; i++) {
-		if (!is_filled(board[i])) {
-			const next_board = drop_piece(board, i, color)
-			const next_picks = ai(next_board, switch_color(color), depth - 1)
-			const pick = max_by(next_picks, get_1)
-
-			picks.push([i, -pick[1]])
-		}
+function next_states(board, color){
+	var next_states = [];
+	for(let i = 0; i < 7; i++){
+		const next_board = drop_piece(board, i, color);
+		next_states.push(next_board);
 	}
-
-	return picks
+	console.log(next_states);
+	return next_states;
 }
+
+
+// function minimax(board, depth){
+
+// }
+
+// function ai_gen(board, color, depth) {
+
+// 	const picks = [];
+
+// 	for (let i = 0; i < 7; i++) {
+// 		if (!is_filled(board[i])) {
+// 			const next_board = drop_piece(board, i, color)
+// 			const next_picks = ai(next_board, switch_color(color), depth - 1)
+// 			const pick = max_by(next_picks, get_1)
+
+// 			picks.push([i, -pick[1]])
+// 		}
+// 	}
+// 	return picks
+// }
 
 // how valuable is a streak?
 function weight(streak) {
@@ -132,6 +149,8 @@ function color_sum(scores, color) {
 	return s;
 }
 
+/*
+ ##########################################################
 // heuristic: add one plain point for continuing a streak
 function migrate(streaks, memo, i) {
 	const streak = memo.streaks[i]
@@ -154,28 +173,30 @@ function steal(streaks, memo, i) {
 	})
 }
 
-// iteration schemes for memo traversal?
-const descend = {
-	direction: 1,
-	iteration: (xss, cb) => {
-		for (let i = 0; i < 7; i++) {
-			for (let j = 0; j < 6; j++) {
-				cb(i, j)
-			}
-		}
-	}
-}
+*/
 
-const ascend = {
-	direction: -1,
-	iteration: (xss, cb) => {
-		for (let i = 6; i >= 0; i--) {
-			for (let j = 0; j < 6; j++) {
-				cb(i, j)
-			}
-		}
-	}
-}
+// iteration schemes for memo traversal?
+// const descend = {
+// 	direction: 1,
+// 	iteration: (xss, cb) => {
+// 		for (let i = 0; i < 7; i++) {
+// 			for (let j = 0; j < 6; j++) {
+// 				cb(i, j)
+// 			}
+// 		}
+// 	}
+// }
+
+// const ascend = {
+// 	direction: -1,
+// 	iteration: (xss, cb) => {
+// 		for (let i = 6; i >= 0; i--) {
+// 			for (let j = 0; j < 6; j++) {
+// 				cb(i, j)
+// 			}
+// 		}
+// 	}
+// }
 
 // is a coordinate pair valid
 const valid = (i, j) => (0 <= i && i <= 6) && (0 <= j && j <= 5)
@@ -183,6 +204,10 @@ const valid = (i, j) => (0 <= i && i <= 6) && (0 <= j && j <= 5)
 const empty_memo = { type: EMPTY }
 
 //add_memo is being used in streak table which is the whole heuristic thing
+
+
+
+
 const add_memo = (memo_mat, board, direction) => (i, j) => {
 	const x = board[i][j]
 
@@ -277,6 +302,7 @@ function make_game(difficulty) {
 
 			if (winning !== EMPTY) {
 				log(show_state(winning) + ' won!')
+				throw new Error("The game has ended.")
 			}
 		},
 		move_ai() {
@@ -304,5 +330,8 @@ while (true){
  game.move_1p(Number(column))
 }
 
-
+//compute game streak
+//whos turn it is, what colors are in the spots
 // ;[3].map(game.move_1p)
+
+
