@@ -232,12 +232,17 @@ Game.prototype.getScore = function() {
 }
 ```
 
-###Now for the fun part: Minimax  
+### Now for the fun part: Minimax  
 
 In the concept of Minimax, there is a 'Minimizing Player' and a 'Maximizing Player'. Let me explain what that means:
 When playing a game, normally you want to get the highest score. You could say that you want to 'maximize' your score. When building an AI, it will need to maximize it's score in order to make a move that could lead to winning. There is no way to predict excatly what the Human player will do, and so we calculate all possibilitie moves. Then, we assume that the Human Player will want to 'minimize' the AI's score. They will probably pick a move that will lead to the AI losing. So we look at all possible moves the human could make after every possible move the AI could make.
 
-###But how do we calculate all possible moves?
+That starts to look something like this:
+
+![Minimax Tree1](http://i.imgur.com/S5I0Obn.jpg)
+
+
+### But how do we calculate all possible moves?
 We will do that with a function that we call 'next_states'.
 
 ```js
@@ -258,7 +263,7 @@ function next_states(game, color){
 
  Then we calculate the board state of each possible move the human will make.
 
- ###How do we calculate the board state?
+ ### How do we calculate the board state?
  We will write a method on game's prototype to do that called getScore.
 
 ```js
@@ -288,7 +293,6 @@ Game.prototype.getScore = function() {
   We assume they will "minimize" the AI's score so we pick out the minimum valued board from each set of possible moves. Then we pick the best value we could possibly get to by choosing the maximum of the set of minimums we just finished building.   
   
 
-![Minimax Tree1](http://i.imgur.com/S5I0Obn.jpg)
 
 
 ![Minimax Tree2](http://i.imgur.com/d2vfhTH.jpg)
