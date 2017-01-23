@@ -22,9 +22,12 @@ var gameBoard = [
     [0,0,0,0,0,0],
     [0,0,0,0,0,0],
     [0,0,0,0,0,0]
-]```  
+]  
+```  
 
 Using an Array of Arrays for Connect 4 makes the data easy to iterate through. 
 
 
 The `Game` class keeps track of the board and the relevant streaks on the board, in an object called `totalStreaks`.
+
+We will create
