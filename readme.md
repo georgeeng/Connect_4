@@ -205,12 +205,6 @@ Game.prototype.horizontal_streaks = function() {
 // }	
 ```
 
-//subtract yellow wants as many streaks
-//red having as few streaks as possible
-//the less streaks red has, the better yellow is doing
-
-
-
 ###Now for the fun part: Minimax  
 
 In the concept of Minimax, there is a 'Minimizing Player' and a 'Maximizing Player'. Let me explain what that means:
