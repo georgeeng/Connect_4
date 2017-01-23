@@ -10,7 +10,7 @@ The first thing we need to do to create our Connect 4 Engine, is to create a few
 1. Create a board (Array of Arrays)  
 2. Create 3 different states (i.e. EMPTY, RED, YELLOW)  
 3. Create a Drop_Piece function.  
-4. Create a few utility functions i.e. a function that sets a value in the array, and returns a new array without modifying the original. `replace`
+4. Create a few utility functions i.e. a function that sets a value in the array, and returns a new array without modifying the original. Let's call this function `replace`.
 
 1.
 ```js
@@ -232,6 +232,10 @@ Game.prototype.getScore = function() {
 }
 ```
 
+###Now for the fun part: Minimax###  
+
+![Minimax Tree1](http://i.imgur.com/d2vfhTH.jpg)
+![Minimax Tree2](http://i.imgur.com/S5I0Obn.jpg)
 
 
 
