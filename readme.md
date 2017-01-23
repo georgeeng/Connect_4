@@ -1,4 +1,4 @@
-**How to build Connect 4 in JavaScript: A Tutorial --- by George Eng**
+###How to build Connect 4 in JavaScript: A Tutorial --- by George Eng
 
 In the first part of this tutorial, I will go over how to make a simple game of Connect 4, and running it in node. Secondly, I will go over how implement an AI in this game to play with you!  
   
@@ -211,7 +211,7 @@ Game.prototype.horizontal_streaks = function() {
 
 
 
-### Now for the fun part: Minimax  
+###Now for the fun part: Minimax  
 
 In the concept of Minimax, there is a 'Minimizing Player' and a 'Maximizing Player'. Let me explain what that means:
 When playing a game, normally you want to get the highest score. You could say that you want to 'maximize' your score. When building an AI, it will need to maximize it's score in order to make a move that could lead to winning. There is no way to predict excatly what the Human player will do, and so we calculate all possibilitie moves. Then, we assume that the Human Player will want to 'minimize' the AI's score. They will probably pick a move that will lead to the AI losing. So we look at all possible moves the human could make after every possible move the AI could make.
@@ -221,7 +221,7 @@ That starts to look something like this:
 ![Minimax Tree1](http://i.imgur.com/S5I0Obn.jpg)
 
 
-### But how do we calculate all possible moves?
+***But how do we calculate all possible moves?***  
 We will do that with a function that we call 'next_states'.
 
 ```js
@@ -330,7 +330,8 @@ function maxi(game, depth) {
 }
 ```
   
-Last but not least, Let's run our game!  
+***Last but not least, Let's run our game!***  
+
 We will do this by creating a variable `currentGame`.  Next, create a function `ai_move` that will take in a board and create a new instance of that board. We call nextStates and to every next state, we will run the callback function `mini` on all of our game states. We take the highest score from the array of scores, and then we will find the index of that best score.  Now, we return `drop_piece(board, bestGameInd, YELLOW)` which returns a new board with a dropped piece.  
 
 
