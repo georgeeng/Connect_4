@@ -242,7 +242,8 @@ function next_states(game, color){
 
  Then we calculate the board state of each possible move the human will make.
 
- ###How do we calculate the board state?
+ ###How do we calculate the board state?  
+   
  We will write another method on the Game's prototype. Let's call this method `getScore`. This `getScore` function will get the score of a specific board.
 
 ```js
