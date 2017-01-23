@@ -33,7 +33,8 @@ const drop_piece = function(board, col_index, piece){
 			return new_board
 		}
 	}
-	throw new Error("No empty pieces!");
+
+	return board;
 }
 
 function scores(board) {
