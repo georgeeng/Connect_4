@@ -37,7 +37,7 @@ const YELLOW = 2
 
 //More
 
-The `Game` class keeps track of the board and the relevant streaks on the board, in an object called `totalStreaks`.
+The `Game` class keeps track of the board and the relevant streaks on the board, in an object called `totalStreaks`.  Total streaks will keep track of the current streaks within a game, so that we can set a value(score) to that certain game state. We have `red2open2` which equates to, player 'Red' has '2' streaks, and '2' open sides to it. This is good because it will allow us to 
 
 ```js
 
@@ -63,8 +63,9 @@ function Game(board) {
 }
 ```
 
-  
-Next we will need to create a few methods on Games prototype that will allow us to update the `totalStreaks` object.  
+Notice how the class `Game` has a few methods to it. This is because we need to count the vertical streaks and horizontal streaks, and then update our totalStreaks object. This will be important for our heuristics later on.  
+
+Let us create a few methods on Games prototype, so that it will allow us to update the `totalStreaks` object, and count the streaks. 
   
 We will implement `vertical_streaks`, `horizontal_streaks`, and `getScore`.  
 
@@ -198,17 +199,17 @@ Game.prototype.horizontal_streaks = function() {
         }
     }
 }
-
-
-
 // Game.prototype.diagonal_streak1 = function(){
-
 // }	
 ```
 
 //subtract yellow wants as many streaks
 //red having as few streaks as possible
 //the less streaks red has, the better yellow is doing
+
+Now, let's create a scoring function! This `getScore` function will get the score of a specific board.
+
+We will value higher streaks higher, and ones with open ends even higher than that. Yellow (streak)4 and Red (streak)4 will have a very, very high score because, that is how you win this game!
 
 ```js
 Game.prototype.getScore = function() {
@@ -230,12 +231,6 @@ Game.prototype.getScore = function() {
 	return score;
 }
 ```
-
-
-
-
-
-
 
 
 
