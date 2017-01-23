@@ -1,5 +1,7 @@
 **How to build Connect 4 in JavaScript: A Tutorial --- by George Eng**
 
+In the first part of this tutorial, I will go over how to make a simple game of Connect 4, and running it in node. Secondly, I will go over how implement an AI in this game to play with you!  
+  
 In order to build our connect 4 game, we will first need to write some functions to create the engine of the game. 
 
 **Prerequisites for Building Connect 4 Engine**  
@@ -329,6 +331,9 @@ function maxi(game, depth) {
 ```
   
 Last but not least, Let's run our game!  
+We will do this by creating a variable `currentGame`.  Next, create a function `ai_move` that will take in a board and create a new instance of that board. We call nextStates and to every next state, we will run the callback function `mini` on all of our game states. We take the highest score from the array of scores, and then we will find the index of that best score.  Now, we return `drop_piece(board, bestGameInd, YELLOW)` which returns a new board with a dropped piece.  
+
+
 ```js
 
 var currentGame;
@@ -346,7 +351,11 @@ function ai_move(board) {
 
     return drop_piece(board, bestGameInd, YELLOW)
 }
+```  
 
+Finally, create a function that will run our game. We will prompt our user for a column and `drop_piece` in that column. Next, we will create a 'game over' state, so if Red has totalStreak of 4, you win, while if Yellow obtained a totalStreak of 4, you lose!
+
+```js
 while (true){
  let column = prompt("Select a column: ")
  if(column > 6){
@@ -369,6 +378,10 @@ while (true){
 }
 ```
 
+
+###Conclusion  
+
+A few things can still be adjusted in this game. To make it more enjoyable, I would like to run this game in the DOM by using something like canvas. Also, The heuristics as of right now does not account for diagonal streaks: A tweak will be added in the very near future.
 
 
 
