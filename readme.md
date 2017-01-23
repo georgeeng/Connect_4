@@ -67,7 +67,7 @@ Notice how the class `Game` has a few methods to it. This is because we need to 
 
 Let us create a few methods on Games prototype, so that it will allow us to update the `totalStreaks` object, and count the streaks. 
   
-We will implement `vertical_streaks`, `horizontal_streaks`, and `getScore`.  
+We will implement `vertical_streaks` and `horizontal_streaks` first. 
 
 ```js
 Game.prototype.vertical_streaks = function() {
@@ -240,8 +240,8 @@ function next_states(game, color){
 
  Then we calculate the board state of each possible move the human will make.
 
- ### How do we calculate the board state?
- We will write a method on game's prototype to do that called `getScore`. This `getScore` function will get the score of a specific board.
+ ###How do we calculate the board state?
+ We will write another method on the Game's prototype. Let's call this method `getScore`. This `getScore` function will get the score of a specific board.
 
 ```js
 Game.prototype.getScore = function() {
@@ -265,10 +265,35 @@ Game.prototype.getScore = function() {
 	return score;
 }
 ```
-We will value higher streaks higher, and ones with open ends even higher than that. Yellow (streak)4 and Red (streak)4 will have a very, very high score because, that is how you win this game!
+We will value higher streaks higher, and ones with open ends even higher than that. Yellow (streak)4 and Red (streak)4 will have a very, very high score because, that is how you win this game! Yellow (our maximizing agent) will want as many streaks as possible, so we score that highly. While when Red has streaks, that is bad for us, so we subtract that from the score.
 
+  We assume they will "minimize" the AI's score so we pick out the minimum valued board from each set of possible moves. Then we pick the best value we could possibly get to by choosing the maximum of the set of minimums we just finished building.  
+  ```js
+  function mini(game, depth) {
+	if (depth === 0) {
+        return game.getScore();
+    }
 
-  We assume they will "minimize" the AI's score so we pick out the minimum valued board from each set of possible moves. Then we pick the best value we could possibly get to by choosing the maximum of the set of minimums we just finished building.   
+    let min = Infinity;
+
+    if (game.totalStreaks.red4 || game.totalStreaks.yellow4) {
+        return game.getScore();
+    }
+
+    var nextStates = next_states(game, RED)
+
+    for(let i = 0; i < 7; i++){
+        let nextState = nextStates[i];
+        let score = maxi(nextState, depth -1);
+
+        if(score < min) {
+            min = score;
+        }
+    }
+
+    return min;
+}
+```
   
 
 
@@ -276,6 +301,37 @@ We will value higher streaks higher, and ones with open ends even higher than th
 ![Minimax Tree2](http://i.imgur.com/d2vfhTH.jpg)
 
 You could say that we are trying to pick the "best" worst case scenerio of future board states. We know that we should try to maximize our AI's score, but we will do that with the fact that, a human player will try to minimize it's score, in mind.
+
+```js
+function maxi(game, depth) {
+	if (depth === 0) {
+		return game.getScore();
+	}
+
+	let max = -Infinity;
+    //if terminal node has been reached return the heuristic 
+	if (game.totalStreaks.red4 || game.totalStreaks.yellow4) {
+		return game.getScore();
+	}
+
+
+ 
+
+ 	// make an array of next game states
+ 	//PICKS HIGHEST SCORE WHILE ASSUMING PLAYER WILL PICK LOWEST SCORE
+ 	var nextStates = next_states(game, YELLOW)
+
+ 	for(let i = 0; i < 7; i++){
+ 		let nextState = nextStates[i];
+ 		let score = mini(nextState, depth - 1);
+
+ 		if (score > max) {
+ 			max = score;
+ 		}
+ 	}
+ 		return max;
+}
+```
 
 
 
