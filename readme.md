@@ -313,11 +313,6 @@ function maxi(game, depth) {
 	if (game.totalStreaks.red4 || game.totalStreaks.yellow4) {
 		return game.getScore();
 	}
-
-
- 
-
- 	// make an array of next game states
  	//PICKS HIGHEST SCORE WHILE ASSUMING PLAYER WILL PICK LOWEST SCORE
  	var nextStates = next_states(game, YELLOW)
 
@@ -332,7 +327,47 @@ function maxi(game, depth) {
  		return max;
 }
 ```
+  
+Last but not least, Let's run our game!  
+```js
 
+var currentGame;
+function ai_move(board) {
+
+    currentGame = new Game(board)
+    var nextStates = next_states(currentGame, YELLOW);
+
+    var nextStatesScores = nextStates.map(function(game) {
+        return mini(game, 5);
+    });
+
+    var bestScore = Math.max(...nextStatesScores);
+    var bestGameInd = nextStatesScores.indexOf(bestScore);
+
+    return drop_piece(board, bestGameInd, YELLOW)
+}
+
+while (true){
+ let column = prompt("Select a column: ")
+ if(column > 6){
+ 	console.log('Move must be between 0 and 6 mmkay')
+ 	continue;
+ }
+ console.log(`Dropping piece in column ${column}`);
+ var gameBoard = drop_piece(gameBoard, Number(column), RED)
+
+ var gameBoard = ai_move(gameBoard);
+
+ console.log('gameBoard\n', gameBoard);
+    if(currentGame.totalStreaks.red4 > 0){
+        console.log('YOU WIN!!!!!!!!')
+        break;
+    }else if (currentGame.totalStreaks.yellow4 > 0) {
+        console.log('COMPUTER WINS OH NOOOO')
+        break;
+    }
+}
+```
 
 
 
