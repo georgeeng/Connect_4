@@ -232,10 +232,68 @@ Game.prototype.getScore = function() {
 }
 ```
 
-###Now for the fun part: Minimax###  
+###Now for the fun part: Minimax  
 
-![Minimax Tree1](http://i.imgur.com/d2vfhTH.jpg)
-![Minimax Tree2](http://i.imgur.com/S5I0Obn.jpg)
+In the concept of Minimax, there is a 'Minimizing Player' and a 'Maximizing Player'. Let me explain what that means:
+When playing a game, normally you want to get the highest score. You could say that you want to 'maximize' your score. When building an AI, it will need to maximize it's score in order to make a move that could lead to winning. There is no way to predict excatly what the Human player will do, and so we calculate all possibilitie moves. Then, we assume that the Human Player will want to 'minimize' the AI's score. They will probably pick a move that will lead to the AI losing. So we look at all possible moves the human could make after every possible move the AI could make.
+
+###But how do we calculate all possible moves?
+We will do that with a function that we call 'next_states'.
+
+```js
+function next_states(game, color){
+	var next_states_arr = [];
+	for(let i = 0; i < 7; i++){
+		const next_board = drop_piece(game.board, i, color);
+		next_states_arr.push(next_board);
+	}
+
+	return next_states_arr.map(function(state) {
+		return new Game(state);
+        //returning an array of games
+        //streaks need to be updated so create new instance of game with current state
+	});
+}
+```
+
+ Then we calculate the board state of each possible move the human will make.
+
+ ###How do we calculate the board state?
+ We will write a method on game's prototype to do that called getScore.
+
+```js
+Game.prototype.getScore = function() {
+	var score = 0;
+
+	// add values to the total score if there are streaks associated with the AI.
+	score += this.totalStreaks.yellow2open1 * 10;
+	score += this.totalStreaks.yellow2open2 * 100;
+	score += this.totalStreaks.yellow3open1 * 200;
+	score += this.totalStreaks.yellow3open2 * 2000;
+	score += this.totalStreaks.yellow4 * 99999999999;
+
+	// subtract values if there are streaks associated with the Human player.
+	score -= this.totalStreaks.red2open1 * 10;
+	score -= this.totalStreaks.red2open2 * 100;
+	score -= this.totalStreaks.red3open1 * 200;
+	score -= this.totalStreaks.red3open2 * 2000;
+	score -= this.totalStreaks.red4 * 99999999999;
+
+
+	return score;
+}
+```
+
+
+  We assume they will "minimize" the AI's score so we pick out the minimum valued board from each set of possible moves. Then we pick the best value we could possibly get to by choosing the maximum of the set of minimums we just finished building.   
+  
+
+![Minimax Tree1](http://i.imgur.com/S5I0Obn.jpg)
+
+
+![Minimax Tree2](http://i.imgur.com/d2vfhTH.jpg)
+
+You could say that we are trying to pick the "best" worst case scenerio of future board states. We know that we should try to maximize our AI's score, but we will do that with the fact that, a human player will try to minimize it's score, in mind.
 
 
 
