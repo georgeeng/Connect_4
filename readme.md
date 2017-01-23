@@ -207,30 +207,7 @@ Game.prototype.horizontal_streaks = function() {
 //red having as few streaks as possible
 //the less streaks red has, the better yellow is doing
 
-Now, let's create a scoring function! This `getScore` function will get the score of a specific board.
 
-We will value higher streaks higher, and ones with open ends even higher than that. Yellow (streak)4 and Red (streak)4 will have a very, very high score because, that is how you win this game!
-
-```js
-Game.prototype.getScore = function() {
-	var score = 0;
-
-	score += this.totalStreaks.yellow2open1 * 10;
-	score += this.totalStreaks.yellow2open2 * 100;
-	score += this.totalStreaks.yellow3open1 * 200;
-	score += this.totalStreaks.yellow3open2 * 2000;
-	score += this.totalStreaks.yellow4 * 99999999999;
-
-	score -= this.totalStreaks.red2open1 * 10;
-	score -= this.totalStreaks.red2open2 * 100;
-	score -= this.totalStreaks.red3open1 * 200;
-	score -= this.totalStreaks.red3open2 * 2000;
-	score -= this.totalStreaks.red4 * 99999999999;
-
-
-	return score;
-}
-```
 
 ### Now for the fun part: Minimax  
 
@@ -264,7 +241,7 @@ function next_states(game, color){
  Then we calculate the board state of each possible move the human will make.
 
  ### How do we calculate the board state?
- We will write a method on game's prototype to do that called getScore.
+ We will write a method on game's prototype to do that called `getScore`. This `getScore` function will get the score of a specific board.
 
 ```js
 Game.prototype.getScore = function() {
@@ -288,6 +265,7 @@ Game.prototype.getScore = function() {
 	return score;
 }
 ```
+We will value higher streaks higher, and ones with open ends even higher than that. Yellow (streak)4 and Red (streak)4 will have a very, very high score because, that is how you win this game!
 
 
   We assume they will "minimize" the AI's score so we pick out the minimum valued board from each set of possible moves. Then we pick the best value we could possibly get to by choosing the maximum of the set of minimums we just finished building.   
